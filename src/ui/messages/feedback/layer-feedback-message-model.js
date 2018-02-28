@@ -160,8 +160,8 @@ class FeedbackModel extends MessageTypeModel {
 FeedbackModel.prototype.title = 'Experience Rating';
 FeedbackModel.prototype.prompt = 'Rate your experience 1-5 stars';
 FeedbackModel.prototype.promptWait = 'Waiting for Feedback';
-FeedbackModel.prototype.summary = '${customer} rated the experience ${rating} stars';
-FeedbackModel.prototype.responseMessage = '${customer} rated the experience ${rating} stars';
+FeedbackModel.prototype.summary = '${customer} rated the experience ${rating} stars'; // eslint-disable-line no-template-curly-in-string
+FeedbackModel.prototype.responseMessage = '${customer} rated the experience ${rating} stars'; // eslint-disable-line no-template-curly-in-string
 FeedbackModel.prototype.placeholder = 'Add a comment...';
 FeedbackModel.prototype.enabledFor = '';
 FeedbackModel.prototype.customResponseData = null;
@@ -183,5 +183,4 @@ Root.initClass.apply(FeedbackModel, [FeedbackModel, 'FeedbackModel']);
 Core.Client.registerMessageTypeModelClass(FeedbackModel, 'FeedbackModel');
 
 module.exports = FeedbackModel;
-
 

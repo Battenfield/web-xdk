@@ -626,13 +626,13 @@ class ClientAuthenticator extends Root {
         }
         this._clientReady();
       }, this)
-      .once('identities:loaded-error', (evt) => {
-        this.user.off('identities:loaded', null, this);
-        if (evt.error.id !== 'authentication_required') {
-          if (!this.user.displayName) this.user.displayName = this.defaultOwnerDisplayName;
-          this._clientReady();
-        }
-      }, this);
+        .once('identities:loaded-error', (evt) => {
+          this.user.off('identities:loaded', null, this);
+          if (evt.error.id !== 'authentication_required') {
+            if (!this.user.displayName) this.user.displayName = this.defaultOwnerDisplayName;
+            this._clientReady();
+          }
+        }, this);
     }
   }
 

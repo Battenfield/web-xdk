@@ -482,7 +482,7 @@ class DbManager extends Root {
   writeMessages(messages, callback) {
     this._getMessageData(
       messages.filter(message => !message.isDestroyed && !message.isNew()),
-      dbMessageData => this._writeObjects('messages', dbMessageData, callback)
+      dbMessageData => this._writeObjects('messages', dbMessageData, callback),
     );
   }
 
@@ -588,8 +588,8 @@ class DbManager extends Root {
    */
   loadConversations(sortBy, fromId, pageSize, callback) {
     try {
-      let sortIndex,
-        range = null;
+      let sortIndex;
+      let range = null;
       const fromConversation = fromId ? client.getConversation(fromId) : null;
       if (sortBy === 'last_message') {
         sortIndex = 'last_message_sent';
@@ -703,7 +703,7 @@ class DbManager extends Root {
    * @param {Layer.Core.Message[]} callback.result
    */
   loadMessages(conversationId, fromId, pageSize, callback) {
-    if (!this['_permission_messages'] || this._isOpenError) return callback([]);
+    if (!this._permission_messages || this._isOpenError) return callback([]);
     try {
       const fromMessage = fromId ? client.getMessage(fromId) : null;
       const query = window.IDBKeyRange.bound([conversationId, 0],
@@ -726,7 +726,7 @@ class DbManager extends Root {
    * @param {Layer.Core.Announcement[]} callback.result
    */
   loadAnnouncements(fromId, pageSize, callback) {
-    if (!this['_permission_messages'] || this._isOpenError) return callback([]);
+    if (!this._permission_messages || this._isOpenError) return callback([]);
     try {
       const fromMessage = fromId ? client.getMessage(fromId) : null;
       const query = window.IDBKeyRange.bound(['announcement', 0],
@@ -974,36 +974,36 @@ class DbManager extends Root {
     // If the target is present in the sync event, but does not exist in the system,
     // do NOT attempt to instantiate this event... unless its a DELETE operation.
     const newData = syncEvents
-    .filter((syncEvent) => {
-      const hasTarget = Boolean(syncEvent.target && client.getObject(syncEvent.target));
-      return syncEvent.operation === 'DELETE' || hasTarget;
-    })
-    .map((syncEvent) => {
-      if (syncEvent.isWebsocket) {
-        return new SyncEvent.WebsocketSyncEvent({
-          target: syncEvent.target,
-          depends: syncEvent.depends,
-          operation: syncEvent.operation,
-          id: syncEvent.id,
-          data: syncEvent.data,
-          fromDB: true,
-          createdAt: syncEvent.created_at,
-        });
-      } else {
-        return new SyncEvent.XHRSyncEvent({
-          target: syncEvent.target,
-          depends: syncEvent.depends,
-          operation: syncEvent.operation,
-          id: syncEvent.id,
-          data: syncEvent.data,
-          method: syncEvent.method,
-          headers: syncEvent.headers,
-          url: syncEvent.url,
-          fromDB: true,
-          createdAt: syncEvent.created_at,
-        });
-      }
-    });
+      .filter((syncEvent) => {
+        const hasTarget = Boolean(syncEvent.target && client.getObject(syncEvent.target));
+        return syncEvent.operation === 'DELETE' || hasTarget;
+      })
+      .map((syncEvent) => {
+        if (syncEvent.isWebsocket) {
+          return new SyncEvent.WebsocketSyncEvent({
+            target: syncEvent.target,
+            depends: syncEvent.depends,
+            operation: syncEvent.operation,
+            id: syncEvent.id,
+            data: syncEvent.data,
+            fromDB: true,
+            createdAt: syncEvent.created_at,
+          });
+        } else {
+          return new SyncEvent.XHRSyncEvent({
+            target: syncEvent.target,
+            depends: syncEvent.depends,
+            operation: syncEvent.operation,
+            id: syncEvent.id,
+            data: syncEvent.data,
+            method: syncEvent.method,
+            headers: syncEvent.headers,
+            url: syncEvent.url,
+            fromDB: true,
+            createdAt: syncEvent.created_at,
+          });
+        }
+      });
 
     // Sort the results and then return them.
     // TODO: Query results should come back sorted by database with proper Index
@@ -1060,28 +1060,28 @@ class DbManager extends Root {
     this.onOpen(() => {
       const data = [];
       this.db.transaction([tableName], 'readonly')
-          .objectStore(tableName)
-          .index(indexName)
-          .openCursor(range, 'prev')
-          .onsuccess = (evt) => {
-            /* istanbul ignore next */
-            if (this.isDestroyed) return;
-            const cursor = evt.target.result;
-            if (cursor) {
-              if (shouldSkipNext) {
-                shouldSkipNext = false;
-              } else {
-                data.push(cursor.value);
-              }
-              if (pageSize && data.length >= pageSize) {
-                callback(data);
-              } else {
-                cursor.continue();
-              }
+        .objectStore(tableName)
+        .index(indexName)
+        .openCursor(range, 'prev')
+        .onsuccess = (evt) => {
+          /* istanbul ignore next */
+          if (this.isDestroyed) return;
+          const cursor = evt.target.result;
+          if (cursor) {
+            if (shouldSkipNext) {
+              shouldSkipNext = false;
             } else {
-              callback(data);
+              data.push(cursor.value);
             }
-          };
+            if (pageSize && data.length >= pageSize) {
+              callback(data);
+            } else {
+              cursor.continue();
+            }
+          } else {
+            callback(data);
+          }
+        };
     });
   }
 

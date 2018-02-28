@@ -22,7 +22,6 @@
 import { client } from '../../settings';
 import Core from '../namespace';
 import Root from '../root';
-import { SYNC_STATE } from '../../constants';
 import Query from './query';
 import ConversationsQuery from './conversations-query';
 
@@ -154,38 +153,6 @@ class ChannelsQuery extends ConversationsQuery {
           toIndex: newIndex,
         });
       }
-    }
-  }
-
-  _getInsertIndex(channel, data) {
-    if (!channel.isSaved()) return 0;
-    const sortField = this._getSortField();
-    let index;
-    if (sortField === 'created_at') {
-      for (index = 0; index < data.length; index++) {
-        const item = data[index];
-        if (item.syncState === SYNC_STATE.NEW || item.syncState === SYNC_STATE.SAVING) {
-          // No-op do not insert server data before new and unsaved data
-        } else if (channel.createdAt >= item.createdAt) {
-          break;
-        }
-      }
-      return index;
-    } else {
-      let oldIndex = -1;
-      const d1 = channel.lastMessage ? channel.lastMessage.sentAt : channel.createdAt;
-      for (index = 0; index < data.length; index++) {
-        const item = data[index];
-        if (item.id === channel.id) {
-          oldIndex = index;
-        } else if (item.syncState === SYNC_STATE.NEW || item.syncState === SYNC_STATE.SAVING) {
-          // No-op do not insert server data before new and unsaved data
-        } else {
-          const d2 = item.lastMessage ? item.lastMessage.sentAt : item.createdAt;
-          if (d1 >= d2) break;
-        }
-      }
-      return oldIndex === -1 || oldIndex > index ? index : index - 1;
     }
   }
 

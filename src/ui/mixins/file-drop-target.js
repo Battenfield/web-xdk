@@ -193,9 +193,13 @@ module.exports = {
     _processAttachments(files) {
       const imageTypes = ['image/gif', 'image/png', 'image/jpeg', 'image/svg'];
       const nonImageParts = files.filter(file => imageTypes.indexOf(file.type) === -1);
-      return new CarouselModel({
-        items: nonImageParts.length ? files.map(file => new FileModel({ source: file, title: file.name })) : files.map(file => new ImageModel({ source: file, title: file.name })),
-      });
+      let items;
+      if (nonImageParts.length) {
+        items = files.map(file => new FileModel({ source: file, title: file.name }));
+      } else {
+        items = files.map(file => new ImageModel({ source: file, title: file.name }));
+      }
+      return new CarouselModel({ items });
     },
 
     /**

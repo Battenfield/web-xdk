@@ -48,7 +48,7 @@ registerComponent('layer-choice-tiles-message-view', {
     onAfterCreate() {
       this.nodes.question.innerHTML = this.model.question;
       this.model.choices.forEach((choice) => {
-        const button = this.createElement('layer-action-button', {
+        this.createElement('layer-action-button', {
           text: choice.text,
           event: 'layer-choice-select',
           data: { id: choice.id },

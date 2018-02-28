@@ -91,7 +91,7 @@ class ImageModel extends MessageTypeModel {
   _generateParts2() {
     // Generate the MessagePart body
     const body = this._initBodyWithMetadata(['sourceUrl', 'previewUrl', 'artist', 'fileName', 'orientation',
-    'width', 'height', 'previewWidth', 'previewHeight', 'title', 'subtitle']);
+      'width', 'height', 'previewWidth', 'previewHeight', 'title', 'subtitle']);
 
     // Generate the MessagePart with the body
     this.part = new MessagePart({
@@ -171,7 +171,7 @@ class ImageModel extends MessageTypeModel {
     // triggers change events so that UIs can rerender with all image data.
     this.childParts.forEach((part) => {
       switch (part.mimeAttributes.role) {
-        case 'source':
+        case 'source': {
           this.source = part;
           const oldUrl = part.url;
           part.on('url-loaded', () => {
@@ -182,6 +182,7 @@ class ImageModel extends MessageTypeModel {
             });
           }, this);
           break;
+        }
         case 'preview':
           this.preview = part;
           if (!part.body) {
@@ -294,7 +295,10 @@ class ImageModel extends MessageTypeModel {
    */
   _postGeneratePreview(srcCanvas) {
 
-    const size = normalizeSize({ width: this.width, height: this.height }, { width: ImageModel.MaxPreviewDimension, height: ImageModel.MaxPreviewDimension });
+    const size = normalizeSize(
+      { width: this.width, height: this.height },
+      { width: ImageModel.MaxPreviewDimension, height: ImageModel.MaxPreviewDimension },
+    );
     const canvas = document.createElement('canvas');
     this.previewWidth = canvas.width = size.width;
     this.previewHeight = canvas.height = size.height;

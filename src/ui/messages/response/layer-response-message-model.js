@@ -55,6 +55,7 @@
  */
 import Core, { MessagePart, MessageTypeModel } from '../../../core';
 import { registerStatusModel } from '../../ui-utils';
+
 class ResponseModel extends MessageTypeModel {
 
   /**

@@ -1,5 +1,9 @@
 # Web XDK Change Log
 
+## 1.0.0-pre2.6
+
+* Adds eslint to build
+
 ## 1.0.0-pre2.5
 
 * React Adapter now respects `className` and `style` properties

@@ -127,8 +127,8 @@ class ReceiptModel extends MessageTypeModel {
     // Gather addresses from this Receipt Message, and generate models for them
     this.billingAddress = this.getModelsByRole('billing-address')[0];
     this.shippingAddress = this.getModelsByRole('shipping-address')[0];
-    /*this.merchantModel = this.getModelsByRole('merchant');
-    this.recipientModel = this.getModelsByRole('recipient');*/
+    /* this.merchantModel = this.getModelsByRole('merchant');
+    this.recipientModel = this.getModelsByRole('recipient'); */
   }
 
   // Used to render Last Message in the Conversation List

@@ -36,11 +36,9 @@ registerComponent('layer-message-viewer-expanded', {
   layer-message-viewer-expanded .layer-message-viewer-expanded-inner > * {
     flex-grow: 1;
   }
-  layer-message-viewer-expanded .layer-message-viewer-expanded-inner > layer-titled-display-container > .layer-card-top {
+  layer-message-viewer-expanded .layer-message-viewer-expanded-inner >
+    layer-titled-display-container > .layer-card-top {
     height: 100%;
-  }
-  layer-message-viewer-expanded .layer-message-viewer-expanded-inner > layer-titled-display-container > .layer-card-top > * {
-
   }
   `,
   template: '<div class="layer-message-viewer-expanded-inner" layer-id="inner"></div>',
@@ -88,9 +86,10 @@ registerComponent('layer-message-viewer-expanded', {
       // If our parent component is a `layer-conversation-view` then listen for its conversation change event and
       // call our onConversationClose handler.
       if (this.parentComponent && this.parentComponent.tagName === 'LAYER-CONVERSATION-VIEW') {
-        this.properties.onConversationClose = this.onClose.bind(this);
-        this.properties.conversationView = this.parentComponent;
-        this.properties.conversationView.addEventListener('layer-conversation-panel-change', this.properties.onConversationClose);
+        const props = this.properties;
+        props.onConversationClose = this.onClose.bind(this);
+        props.conversationView = this.parentComponent;
+        props.conversationView.addEventListener('layer-conversation-panel-change', props.onConversationClose);
       }
     },
 
@@ -143,9 +142,10 @@ registerComponent('layer-message-viewer-expanded', {
       }
 
       if (this.properties.onConversationClose) {
-        this.properties.conversationView.removeEventListener('layer-conversation-panel-change', this.properties.onConversationClose);
-        delete this.properties.conversationView;
-        delete this.properties.onConversationClose;
+        const props = this.properties;
+        props.conversationView.removeEventListener('layer-conversation-panel-change', props.onConversationClose);
+        delete props.conversationView;
+        delete props.onConversationClose;
       }
     },
 

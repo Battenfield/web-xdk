@@ -17,7 +17,6 @@
 import { client as Client } from '../../settings';
 import Core from '../namespace';
 import Util from '../../utils';
-import version from '../../version';
 import Root from '../root';
 import Message from '../models/message';
 import { ErrorDictionary } from '../layer-error';
@@ -47,8 +46,6 @@ class MessageTypeModel extends Root {
     this._initializeProperties();
     if (this.message) {
       this._setupMessage();
-    } else {
-
     }
   }
 
@@ -142,7 +139,7 @@ class MessageTypeModel extends Root {
     this._generateParts((parts) => {
       this.childParts = parts;
       this.part.mimeAttributes.role = 'root';
-      //this.part.mimeAttributes.xdkVersion = 'webxdk-' + version;
+      // this.part.mimeAttributes.xdkVersion = 'webxdk-' + version;
       this.message = conversation.createMessage({
         id: Message.prefixUUID + this.id.replace(/\/parts\/.*$/, '').replace(/^.*MessageTypeModels\//, ''),
         parts: this.childParts,
@@ -423,7 +420,6 @@ class MessageTypeModel extends Root {
    */
   _handlePartAdded(addEvt) {
     const part = addEvt.part;
-    const message = this.message;
 
     // This removes from childParts any part that is not a part of the message. Doesn't seem to be a useful operation,
     // but commented it out until more thought goes into it.
@@ -439,7 +435,6 @@ class MessageTypeModel extends Root {
       part.on('messageparts:change', this._handlePartChanges, this);
       if (!this.part.body) this.part.fetchContent();
       this._parseMessage(this.part.body ? JSON.parse(this.part.body) : {});
-      //this._triggerAsync('message-type-model:change');
     } else if (this.part && part.nodeId === this.part.nodeId) {
       this.part = part;
       this._handlePartChanges(addEvt);
@@ -653,7 +648,7 @@ class MessageTypeModel extends Root {
   _processDelayedTriggers() {
     if (this.isDestroyed) return;
     let hasChange = false;
-    this._delayedTriggers = this._delayedTriggers.filter(evt => {
+    this._delayedTriggers = this._delayedTriggers.filter((evt) => {
       if (evt[0] === 'message-type-model:change' && !hasChange) {
         hasChange = true;
         return true;
@@ -797,14 +792,6 @@ MessageTypeModel.prototype.part = null;
  * @property {String}
  */
 MessageTypeModel.prototype.role = null;
-
-/**
- * Are responses enabled for this Message?
- *
- * @ignore
- * @property {Boolean}
- */
-//MessageTypeModel.prototype.locked = false;
 
 /**
  * Stores all user responses which can be accessed using `getResponse` or `getResponses`

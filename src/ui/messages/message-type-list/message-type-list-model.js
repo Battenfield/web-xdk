@@ -15,7 +15,6 @@ MessageTypeListModel = Layer.Core.Client.getMessageTypeModelClass('MessageTypeLi
 * @extends layer.model
 */
 import Core, { MessagePart, MessageTypeModel } from '../../../core';
-import Util from '../../../utils';
 
 class MessageTypeListModel extends MessageTypeModel {
   _generateParts(callback) {
@@ -27,7 +26,7 @@ class MessageTypeListModel extends MessageTypeModel {
     });
 
     let asyncCount = 0;
-    let parts = [this.part];
+    const parts = [this.part];
     this.items.forEach((item) => {
       this._addModel(item, 'message-item', (moreParts) => {
         moreParts.forEach(p => parts.push(p));
@@ -66,5 +65,4 @@ MessageTypeListModel.MIMEType = 'application/x.layer.message-type-list+json';
 Core.Client.registerMessageTypeModelClass(MessageTypeListModel, 'MessageTypeListModel');
 
 module.exports = MessageTypeListModel;
-
 

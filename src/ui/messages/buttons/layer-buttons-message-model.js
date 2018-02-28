@@ -255,7 +255,6 @@ class ButtonsModel extends MessageTypeModel {
 }
 
 
-
 /**
  * Array of button descriptions that will be rendered for this Message.
  *

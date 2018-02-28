@@ -221,9 +221,9 @@ class Message extends Syncable {
       const addedParts = [];
       const removedParts = [];
       adjustedParts.forEach((part) => {
-         if (!currentParts.has(part)) addedParts.push(part);
+        if (!currentParts.has(part)) addedParts.push(part);
       });
-      currentParts.forEach((part) =>  {
+      currentParts.forEach((part) => {
         if (!adjustedParts.has(part)) removedParts.push(part);
       });
 
@@ -702,8 +702,6 @@ class Message extends Syncable {
     return part || null;
   }
 
-
-
   /**
    * Utility for filtering Message Parts since the Javascript Set object lacks a `filter` method.
    *
@@ -793,7 +791,8 @@ class Message extends Syncable {
     let results = [];
     Object.keys(matches).forEach((attributeName) => {
       const attributeValue = matches[attributeName];
-      const tmpResults = (this._mimeAttributeMap[attributeName] || []).filter(item => item.value === attributeValue).map(item => item.part);
+      const tmpResults = (this._mimeAttributeMap[attributeName] || [])
+        .filter(item => item.value === attributeValue).map(item => item.part);
       if (first) {
         results = tmpResults;
         first = false;
