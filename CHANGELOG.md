@@ -3,6 +3,7 @@
 ## 1.0.0-pre2.6
 
 * Adds eslint to build
+* WEB-1686: layer-models-geneated event now supports `evt.preventDefault()` to prevent the models from being sent as a Message
 
 ## 1.0.0-pre2.5
 

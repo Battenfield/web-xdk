@@ -20,6 +20,7 @@
  * @extends Layer.Core.Query
  */
 import { client } from '../../settings';
+import { SYNC_STATE } from '../../constants';
 import Core from '../namespace';
 import Root from '../root';
 import Query from './query';
@@ -83,9 +84,20 @@ class ChannelsQuery extends ConversationsQuery {
   }
 
 
-  _getInsertIndex(item, data) {
-    return 0;
+  _getInsertIndex(channel, data) {
+    if (!channel.isSaved()) return 0;
+    let index;
+    for (index = 0; index < data.length; index++) {
+      const item = data[index];
+      if (item.syncState === SYNC_STATE.NEW || item.syncState === SYNC_STATE.SAVING) {
+        // No-op do not insert server data before new and unsaved data
+      } else if (channel.createdAt >= item.createdAt) {
+        break;
+      }
+    }
+    return index;
   }
+
 
   _handleChangeEvent(name, evt) {
     let index = this._getIndex(evt.target.id);

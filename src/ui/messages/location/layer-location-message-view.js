@@ -93,7 +93,7 @@ registerComponent('layer-location-message-view', {
       if (this.parentNode && this.parentNode.clientWidth) {
         let marker;
         if (this.model.latitude) {
-          marker = `${this.model.latitude}, ${this.model.longitude}`;
+          marker = `${this.model.latitude},${this.model.longitude}`;
         } else {
           marker = escape(this.model.street1 + (this.model.street2 ? ` ${this.model.street2}` : '') +
             ` ${this.model.city} ${this.model.administrativeArea}, ${this.model.postalCode} ${this.model.country}`);

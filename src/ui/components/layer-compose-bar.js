@@ -244,7 +244,6 @@ registerComponent('layer-compose-bar', {
       this.nodes.input.addEventListener('touchend', this._onFocus.bind(this)); // focus event doesn't refire after keyboard closes and you try to reopen it
 
       // Event handlers
-      this.addEventListener('layer-models-generated', this._handleAttachments.bind(this));
       this.addEventListener('layer-send-click', this._handleSendClick.bind(this, null));
     },
 
@@ -554,14 +553,13 @@ registerComponent('layer-compose-bar', {
     },
 
     /**
-     * If a file event was detected, send some attachments.
+     * Send some attachments; called from the {@link Layer.UI.components.FileUploadButton}.
      *
-     * @method
-     * @param {CustomEvent} evt
-     * @private
+     * @method onModelsGenerated
+     * @param {Layer.Core.MessageTypeModel[]} models
      */
-    _handleAttachments(evt) {
-      this.sendModels(evt.detail.models);
+    onModelsGenerated(models) {
+      this.sendModels(models);
     },
   },
 });
