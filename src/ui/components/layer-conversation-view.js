@@ -763,6 +763,30 @@ registerComponent('layer-conversation-view', {
         this.toggleClass('layer-conversation-view-width-large', newValue >= 600);
       },
     },
+
+    /**
+     * Set a filter on the Query.
+     *
+     * See {@link Layer.Core.Query#filter}.  This removes the data entirely from the Query.
+     * Use it for removing items that are non-renderable or should not be rendered.
+     *
+     * ```
+     * widget.queryFilter = function queryFilter(message) {
+     *   const model = message.createModel();
+     *   return !(model.getModelName() === 'ResponseModel' && !model.displayModel);
+     * };
+     * ```
+     *
+     * @property {Function} queryFilter
+     * @property {Layer.Core.Message} queryFilter.message
+     * @property {Boolean} queryFilter.return
+     */
+    queryFilter: {
+      value: function queryFilter(message) {
+        const model = message.createModel();
+        return !(model.getModelName() === 'ResponseModel' && !model.displayModel);
+      },
+    },
   },
   methods: {
     // Lifecycle method; wire up to detect UI Size changes;

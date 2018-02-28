@@ -4,6 +4,7 @@
 
 * Adds eslint to build
 * WEB-1686: layer-models-geneated event now supports `evt.preventDefault()` to prevent the models from being sent as a Message
+* WEB-1660: Builds in default to filter out Messages from the Conversation View Query that are Response Messages that have no displayable content
 
 ## 1.0.0-pre2.5
 
